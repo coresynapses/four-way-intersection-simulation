@@ -1,0 +1,10 @@
+#+title: Simulation Project Report – Four-Way Intersection Traffic Simulation
+
+* Code Explanation
+
+This is a rudimentary traffic intersection simulation designed to run on an STM32 Nucleo64 C031C6 microcontroller. The simulation models a four-way intersection (North-South and East-West) with fixed-time traffic signals and deterministic vehicle arrivals. The core functionality includes managing simulated vehicle queues and controlling virtual traffic light LEDs represented by physical LEDs connected to the STM32's GPIO pins.
+The code is structured around a main loop that progresses in simulated time. Within this loop, two primary processes occur: vehicle arrival simulation and traffic signal control. Vehicle arrivals are modeled with predefined rates for the North-South and East-West approaches. The simulation checks at each time step if a vehicle should arrive based on these rates and increments the corresponding queue count if so. 
+Simple First-In, First-Out (FIFO) queues are implemented using a structure that solely tracks the number of vehicles waiting. When a green light is active for an approach, all vehicles currently in its queue are considered to have passed through the intersection, and the queue count is reset.
+To visually represent the traffic lights, the code interacts with the STM32's General Purpose Input/Output (GPIO) pins. Specific pins are designated for the Green, Yellow, and Red LEDs for both the North-South and East-West directions. An `LED_GPIO_Init()` function configures these pins as digital outputs. The `setLED()` function then controls the state (ON or OFF) of each individual LED by writing the appropriate logic level to the corresponding GPIO pin using the STM32 HAL library. During each signal phase, the code calls `setLED()` to illuminate the correct combination of LEDs, mimicking the behavior of real traffic lights. For instance, during the North-South Green phase, the Green LEDs for North and South are turned ON, while the Red LEDs for East and West are turned ON. 
+
+ 
